@@ -121,7 +121,6 @@ component clk_wiz_0 is
         clk_in1: in STD_LOGIC);
 end component;
 
-
 component hdmi_tx_0 is
     PORT (
         pix_clk: in STD_LOGIC;
