@@ -97,112 +97,127 @@ begin
          else '0';
     -- HORIZONTAL GRID LINES                                          
  --ACG CODE DOWN HERE!!!
-     gridH <= 1 when pixelVert = (T_EDGE + 72) or 
-     pixelVert = (T_EDGE + 144) or 
-     pixelVert = (T_EDGE + 216) or 
-     pixelVert = (T_EDGE + 288) or 
-     pixelVert = (T_EDGE + 360) or 
-     pixelVert = (T_EDGE + 432) or 
-     pixelVert = (T_EDGE + 504) or 
-     pixelVert = (T_EDGE + 576) or
-     pixelVert = (T_EDGE + 648) or 
-     else; 
+     gridH <= '1' when pixelVert = (T_EDGE + 72) or 
+                         pixelVert = (T_EDGE + 144) or 
+                         pixelVert = (T_EDGE + 216) or 
+                         pixelVert = (T_EDGE + 288) or 
+                         pixelVert = (T_EDGE + 360) or 
+                         pixelVert = (T_EDGE + 432) or 
+                         pixelVert = (T_EDGE + 504) or 
+                         pixelVert = (T_EDGE + 576) or
+                         pixelVert = (T_EDGE + 648)  
+     else '0'; 
+-- vertical grid lines
+    gridV <= '1' when pixelVert = (L_EDGE + 72) or 
+                         pixelHorz = (L_EDGE + 200) or 
+                         pixelHorz = (L_EDGE + 328) or 
+                         pixelHorz = (L_EDGE + 456) or 
+                         pixelHorz = (L_EDGE + 584) or 
+                         pixelHorz = (L_EDGE + 712) or 
+                         pixelHorz = (L_EDGE + 840) or 
+                         pixelHorz = (L_EDGE + 968) or 
+                         pixelHorz = (L_EDGE + 1096)  
+                         else '0'; 
+ 
+-- horizontal hatches                        
+hatchH <= '1' when (
+               -- Horizontal bounding condition (factored out)
+               (pixelHorz >= (HATCHH_CENTER - BORDER_LINE_WIDTH)) and 
+               (pixelHorz <= (HATCHH_CENTER + BORDER_LINE_WIDTH))
+           ) and (
+               -- Vertical match positions
+               pixelVert = (T_EDGE + 14)  or 
+               pixelVert = (T_EDGE + 29)  or 
+               pixelVert = (T_EDGE + 43)  or 
+               pixelVert = (T_EDGE + 58)  or 
+               pixelVert = (T_EDGE + 86)  or 
+               pixelVert = (T_EDGE + 101) or 
+               pixelVert = (T_EDGE + 115) or 
+               pixelVert = (T_EDGE + 130) or 
+               pixelVert = (T_EDGE + 158) or 
+               pixelVert = (T_EDGE + 173) or 
+               pixelVert = (T_EDGE + 187) or 
+               pixelVert = (T_EDGE + 202) or 
+               pixelVert = (T_EDGE + 230) or 
+               pixelVert = (T_EDGE + 245) or 
+               pixelVert = (T_EDGE + 259) or 
+               pixelVert = (T_EDGE + 274) or 
+               pixelVert = (T_EDGE + 302) or 
+               pixelVert = (T_EDGE + 317) or 
+               pixelVert = (T_EDGE + 331) or 
+               pixelVert = (T_EDGE + 346) or 
+               pixelVert = (T_EDGE + 374) or 
+               pixelVert = (T_EDGE + 389) or 
+               pixelVert = (T_EDGE + 403) or 
+               pixelVert = (T_EDGE + 418) or 
+               pixelVert = (T_EDGE + 446) or 
+               pixelVert = (T_EDGE + 461) or 
+               pixelVert = (T_EDGE + 475) or 
+               pixelVert = (T_EDGE + 490) or 
+               pixelVert = (T_EDGE + 518) or 
+               pixelVert = (T_EDGE + 533) or 
+               pixelVert = (T_EDGE + 547) or 
+               pixelVert = (T_EDGE + 562) or 
+               pixelVert = (T_EDGE + 590) or 
+               pixelVert = (T_EDGE + 605) or 
+               pixelVert = (T_EDGE + 619) or 
+               pixelVert = (T_EDGE + 634) or 
+               pixelVert = (T_EDGE + 662) or 
+               pixelVert = (T_EDGE + 677) or 
+               pixelVert = (T_EDGE + 691) or 
+               pixelVert = (T_EDGE + 706)
+           )
+     else '0';                        
 
-    gridV <= 1 when pixelVert = (L_EDGE + 72) or 
-     pixelVert = (L_EDGE + 200) or 
-     pixelVert = (L_EDGE + 328) or 
-     pixelVert = (L_EDGE + 456) or 
-     pixelVert = (L_EDGE + 584) or 
-     pixelVert = (L_EDGE + 712) or 
-     pixelVert = (L_EDGE + 840) or 
-     pixelVert = (L_EDGE + 968) or 
-     pixelVert = (L_EDGE + 1096) or 
-     else; 
-
-    hatchH <= '1' when  pixelVert = ((T_EDGE + 14) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 29) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 43) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 58) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 86) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 101) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 115) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 130) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 158) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 173) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 187) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 202) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 230) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 245) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 259) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 274) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 302) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 317) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 331) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 346) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 374) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 389) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 403) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 418) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 446) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 461) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 475) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 490) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 518) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 533) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 547) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 562) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 590) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 605) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 619) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 634) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 662) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 677) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 691) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelVert = ((T_EDGE + 706) and ((pixelHorz > (HATCHH_CENTER - BORDER_LINE_WIDTH)) or (pixelHorz < ( HATCHH_CENTER + BORDER_LINE_WIDTH)))) or 
-                        else; 
-    
-    hatchV <= '1' when  pixelHorz = ((L_EDGE + 26) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 51) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 77) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 102) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 154) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 179) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 205) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 230) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 282) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 307) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 333) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 358) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 410) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 435) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 461) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 486) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 538) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 563) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 589) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 614) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 666) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 691) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 717) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 742) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 794) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 819) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 845) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 870) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 922) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 947) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 973) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 998) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1050) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1075) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1101) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1126) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1178) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1203) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1229) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        pixelHorz = ((L_EDGE + 1254) and ((pixelVert > (HATCHV_CENTER - BORDER_LINE_WIDTH)) or (pixelVert < ( HATCHV_CENTER + BORDER_LINE_WIDTH)))) or 
-                        else; 
-         
+ -- vertical hatches
+ hatchV <= '1' when (
+               -- Vertical bounding condition (factored out)
+               (pixelVert >= (HATCHV_CENTER - BORDER_LINE_WIDTH)) and 
+               (pixelVert <= (HATCHV_CENTER + BORDER_LINE_WIDTH))
+           ) and (
+               -- Horizontal match positions
+               pixelHorz = (L_EDGE + 26)   or 
+               pixelHorz = (L_EDGE + 51)   or 
+               pixelHorz = (L_EDGE + 77)   or 
+               pixelHorz = (L_EDGE + 102)  or 
+               pixelHorz = (L_EDGE + 154)  or 
+               pixelHorz = (L_EDGE + 179)  or 
+               pixelHorz = (L_EDGE + 205)  or 
+               pixelHorz = (L_EDGE + 230)  or 
+               pixelHorz = (L_EDGE + 282)  or 
+               pixelHorz = (L_EDGE + 307)  or 
+               pixelHorz = (L_EDGE + 333)  or 
+               pixelHorz = (L_EDGE + 358)  or 
+               pixelHorz = (L_EDGE + 410)  or 
+               pixelHorz = (L_EDGE + 435)  or 
+               pixelHorz = (L_EDGE + 461)  or 
+               pixelHorz = (L_EDGE + 486)  or 
+               pixelHorz = (L_EDGE + 538)  or 
+               pixelHorz = (L_EDGE + 563)  or 
+               pixelHorz = (L_EDGE + 589)  or 
+               pixelHorz = (L_EDGE + 614)  or 
+               pixelHorz = (L_EDGE + 666)  or 
+               pixelHorz = (L_EDGE + 691)  or 
+               pixelHorz = (L_EDGE + 717)  or 
+               pixelHorz = (L_EDGE + 742)  or 
+               pixelHorz = (L_EDGE + 794)  or 
+               pixelHorz = (L_EDGE + 819)  or 
+               pixelHorz = (L_EDGE + 845)  or 
+               pixelHorz = (L_EDGE + 870)  or 
+               pixelHorz = (L_EDGE + 922)  or 
+               pixelHorz = (L_EDGE + 947)  or 
+               pixelHorz = (L_EDGE + 973)  or 
+               pixelHorz = (L_EDGE + 998)  or 
+               pixelHorz = (L_EDGE + 1050) or 
+               pixelHorz = (L_EDGE + 1075) or 
+               pixelHorz = (L_EDGE + 1101) or 
+               pixelHorz = (L_EDGE + 1126) or 
+               pixelHorz = (L_EDGE + 1178) or 
+               pixelHorz = (L_EDGE + 1203) or 
+               pixelHorz = (L_EDGE + 1229) or 
+               pixelHorz = (L_EDGE + 1254)
+           )
+     else '0';        
 
 end Behavioral;
 
