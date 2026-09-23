@@ -34,9 +34,9 @@ architecture Behavioral of scopeFace is
     signal borderH, borderV, gridH, gridV, hatchH, hatchV : STD_LOGIC;
     constant HATCHH_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(640, VIDEO_WIDTH_IN_BITS));
     constant HATCHV_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(360, VIDEO_WIDTH_IN_BITS));
-
-
     
+    ch1Enb <= '1';
+    ch2Enb <= '2';
 
 
 
@@ -70,9 +70,17 @@ begin
                 elsif ((hatchH = '1') or (hatchV = '1')) then -- hatch marks are white
                     red <= BORDER_R;
                     green <= BORDER_G;
-                    blue <= BORDER_B;               
+                    blue <= BORDER_B;    
+                    
+                elsif ((ch1 = '1')) then -- hatch marks are white
+                    red <= CH1_R;
+                    green <= CH1_G;
+                    blue <= CH1_B;             
 
-                    -- <add elsif for each Feature Boolean>
+                elsif ((ch1 = '2')) then -- hatch marks are white
+                    red <= CH2_R;
+                    green <= CH2_G;
+                    blue <= CH2_B; 
               
                 else -- this is the background color
                     red <= X"00";
