@@ -36,49 +36,54 @@ package scopeToHdmi_package is
 
     constant VIDEO_WIDTH_IN_BITS: NATURAL := 11;        -- 1650 "pixels" wide, this include FP, SYNCH and BP
 
-    constant H_ACTIVE : STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1280, VIDEO_WIDTH_IN_BITS));
-    constant H_FP : STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := 
-    constant H_SYNC 
-    constant H_BP 
-    constant H_TOTAL : STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := H_ACTIVE + H_FP + H_SYNC + H_BP;
+    constant H_ACTIVE : STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1280, VIDEO_WIDTH_IN_BITS)); -- takes 1280 and turns into 11 bit wide std logic vector
+    constant H_FP :     STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(110, VIDEO_WIDTH_IN_BITS));
+    constant H_SYNC :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(40, VIDEO_WIDTH_IN_BITS));
+    constant H_BP :     STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(220, VIDEO_WIDTH_IN_BITS));
+    constant H_TOTAL :  STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := H_ACTIVE + H_FP + H_SYNC + H_BP; -- front porch: number of clock cycles the front porch is wide
 
-    constant V_ACTIVE 
-    constant V_FP 	
-    constant V_SYNC 
-    constant V_BP	
-    constant V_TOTAL 
+    constant V_ACTIVE : STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(720, VIDEO_WIDTH_IN_BITS));
+    constant V_FP :	    STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(5, VIDEO_WIDTH_IN_BITS));
+    constant V_SYNC :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(5, VIDEO_WIDTH_IN_BITS));
+    constant V_BP :	    STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(20, VIDEO_WIDTH_IN_BITS));
+    constant V_TOTAL :  STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := V_ACTIVE + V_FP + V_SYNC + V_BP; -- adds up all of our porches
         
-    constant L_EDGE 
-    constant R_EDGE 
-    constant WIDTH 
+    constant L_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(100, VIDEO_WIDTH_IN_BITS)); -- where the left edge is (in pixels) on our actual screen)
+    constant R_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1380, VIDEO_WIDTH_IN_BITS));
+    constant WIDTH :    STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1280, VIDEO_WIDTH_IN_BITS));
 
-    constant T_EDGE 
-    constant B_EDGE 
-    constant HEIGHT 
+    constant T_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(100, VIDEO_WIDTH_IN_BITS));
+    constant B_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(850, VIDEO_WIDTH_IN_BITS));
+    constant HEIGHT :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(720, VIDEO_WIDTH_IN_BITS));
 	
     -- This is actually half of the width
-    constant BORDER_LINE_WIDTH 
+    constant BORDER_LINE_WIDTH : std_logic_vector(2 downto 0) := "100"; -- border width: 10 pixels, set to 5 in binary here
 
 	-- RGB color values
+	-- Border Color is WHITE: FFFFFF
     constant BORDER_R : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant BORDER_G : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant BORDER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
-    constant GRID_R 
-    constant GRID_G 
-    constant GRID_B 
+    -- Grid color is WHITE: FFFFFF
+    constant GRID_R   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant GRID_G   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant GRID_B   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
-    constant CH1_R 
-    constant CH1_G
-    constant CH1_B 
+    -- Channel 1 is yellow: FFFF00
+    constant CH1_R  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant CH1_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant CH1_B  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
 
-    constant CH2_R
-    constant CH2_G
-    constant CH2_B
+    -- Channel 2 is cyan: 00FFFF
+    constant CH2_R  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
+    constant CH2_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant CH2_B  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
-    constant TRIGGER_R 
-    constant TRIGGER_G 
-    constant TRIGGER_B 
+    -- Trigger color is WHITE: FFFFFF
+    constant TRIGGER_R : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant TRIGGER_G : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant TRIGGER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
 
 component videoSignalGenerator is
@@ -92,20 +97,19 @@ component videoSignalGenerator is
 end component;
 
 component scopeFace is
-    PORT ( 
-        clk : in STD_LOGIC;
-        resetn : in STD_LOGIC;
-        pixelHorz : in STD_LOGIC;
-        pixelVert : in STD_LOGIC;
-        triggerTime: in STD_LOGIC_VECTOR (VIDEO_WIDTH_IN_BITS - 1 downto 0); 
-        triggerVolt : in STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS - 1 downto 0);
-        ch1 : in STD_LOGIC;
-        ch1enb : in STD_LOGIC;
-        ch2 : in STD_LOGIC;
-        ch2enb : in STD_LOGIC;
-        red : out STD_LOGIC_VECTOR(7 downto 0);
-        green : out STD_LOGIC_VECTOR(7 downto 0);
-        blue : out STD_LOGIC_VECTOR(7 downto 0));
+    PORT ( 	clk: in  STD_LOGIC;
+         resetn : in  STD_LOGIC;
+         pixelHorz : in  STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS - 1 downto 0);
+         pixelVert : in  STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS -1 downto 0);
+         triggerVolt: in STD_LOGIC_VECTOR (VIDEO_WIDTH_IN_BITS - 1 downto 0); -- triangles
+         triggerTime: in STD_LOGIC_VECTOR (VIDEO_WIDTH_IN_BITS - 1 downto 0);
+         red : out  STD_LOGIC_VECTOR(7 downto 0);
+         green : out  STD_LOGIC_VECTOR(7 downto 0);
+         blue : out  STD_LOGIC_VECTOR(7 downto 0);
+         ch1: in STD_LOGIC; -- this to 1
+         ch1Enb: in STD_LOGIC;
+         ch2: in STD_LOGIC;
+         ch2Enb: in STD_LOGIC);
 end component;
 
 component clk_wiz_0 is
@@ -141,15 +145,14 @@ component hdmi_tx_0 is
 end component;
 
 component scopeToHdmi is
-    PORT (
-        sysClk : in STD_LOGIC;
-        resetn : in STD_LOGIC;
-        btn : in STD_LOGIC_VECTOR(2 downto 0);
-        TMDS_CLK_P: out STD_LOGIC;
-        TMDS_CLK_N: out STD_LOGIC;
-        TMDS_DATA_P: out STD_LOGIC_VECTOR(2 downto 0);
-        TMDS_DATA_N: out STD_LOGIC_VECTOR(2 downto 0));
-        hdmiOen : out STD_LOGIC );
+    PORT (  sysClk : in  STD_LOGIC;
+         resetn : in  STD_LOGIC;
+         btn: in	STD_LOGIC_VECTOR(2 downto 0);
+         tmdsDataP : out  STD_LOGIC_VECTOR (2 downto 0);
+         tmdsDataN : out  STD_LOGIC_VECTOR (2 downto 0);
+         tmdsClkP : out STD_LOGIC;
+         tmdsClkN : out STD_LOGIC;
+         hdmiOen:    out STD_LOGIC);
 end component;
      
         	

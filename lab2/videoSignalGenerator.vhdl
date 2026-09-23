@@ -4,6 +4,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.scopeToHdmi_package.all; -- potentially delete if not needed
+
 
 entity videoSignalGenerator is
     PORT(	
@@ -53,15 +55,53 @@ begin
     end process;
 
     -- 2: Assert the horziontal synch signal
+    process(clk)
+    begin
+        if rising_edge (clk) then
+          if resetn = '0' then
+              hs <= '1';
+          elsif((h_cnt = H_FP - 1) and (v_cnt = V_FP - 1)) then
+              hs <= '0';
+          elsif((h_cnt = H_FP + H_SYNC - 1) and (v_cnt = V_FP - 1)) then
+              hs <= '1';            
+            end if;
+        end if;
+            
+    end process;
+                
 
 
 
     -- 3: Generate the pixelHorz signal that is used by
     -- the scopeFace and other components to know which pixel on 
     -- the screen is being drawn.
+        process(clk)
+    begin
+        if rising_edge (clk) then
+            if resetn = '0' then
+                pixelHorz <= (others => '0');
+            elsif(h_cnt >= H_FP + H_SYNC + H_BP - 1) then
+                pixelHorz <= h_cnt - (H_FP + H_SYNC + H_BP - 1);
+            end if;
+        end if;
+    end process;
 
 
     -- 4. assert the h_activeArea signal.  This boolean is true when we are drawing pixels
+    process(clk)
+    begin
+        if rising_edge (clk) then
+            if resetn = '0' then
+                h_activeArea <= '0';
+            elsif((h_cnt = H_FP + H_SYNC + H_BP - 1) and (v_cnt = V_FP - 1))then
+                h_activeArea <= '1';
+            elsif((h_cnt = H_TOTAL - 1) and (v_cnt = V_FP - 1)) then
+                h_activeArea <= '0';
+            else
+                h_activeArea <= h_activeArea;
+            end if;
+        end if;
+    end process;
 
 
 
