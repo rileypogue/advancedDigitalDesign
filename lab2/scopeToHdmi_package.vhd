@@ -92,7 +92,20 @@ component videoSignalGenerator is
 end component;
 
 component scopeFace is
-    PORT ( 	);
+    PORT ( 
+        clk : in STD_LOGIC;
+        resetn : in STD_LOGIC;
+        pixelHorz : in STD_LOGIC;
+        pixelVert : in STD_LOGIC;
+        triggerTime: in STD_LOGIC_VECTOR (VIDEO_WIDTH_IN_BITS - 1 downto 0); 
+        triggerVolt : in STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS - 1 downto 0);
+        ch1 : in STD_LOGIC;
+        ch1enb : in STD_LOGIC;
+        ch2 : in STD_LOGIC;
+        ch2enb : in STD_LOGIC;
+        red : out STD_LOGIC_VECTOR(7 downto 0);
+        green : out STD_LOGIC_VECTOR(7 downto 0);
+        blue : out STD_LOGIC_VECTOR(7 downto 0));
 end component;
 
 component clk_wiz_0 is
@@ -128,7 +141,15 @@ component hdmi_tx_0 is
 end component;
 
 component scopeToHdmi is
-    PORT ( );
+    PORT (
+        sysClk : in STD_LOGIC;
+        resetn : in STD_LOGIC;
+        btn : in STD_LOGIC_VECTOR(2 downto 0);
+        TMDS_CLK_P: out STD_LOGIC;
+        TMDS_CLK_N: out STD_LOGIC;
+        TMDS_DATA_P: out STD_LOGIC_VECTOR(2 downto 0);
+        TMDS_DATA_N: out STD_LOGIC_VECTOR(2 downto 0));
+        hdmiOen : out STD_LOGIC );
 end component;
      
         	

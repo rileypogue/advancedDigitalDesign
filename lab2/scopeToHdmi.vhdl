@@ -20,31 +20,32 @@ end scopeToHdmi;
 
 architecture structure of scopeToHdmi is
     signal red, green, blue: STD_LOGIC_VECTOR(7 downto 0);
-
     signal triggerTime, triggerVolt: STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS - 1 downto 0);
     signal pixelHorz, pixelVert: STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS - 1 downto 0);
     signal prevButton, currButton, activeButton : STD_LOGIC_VECTOR(2 downto 0);
-	    
     signal ch1Wave, ch2Wave: STD_LOGIC;
-
     signal videoClk, videoClk5x, clkLocked: STD_LOGIC;
 
 begin
 
 
     vsg: videoSignalGenerator
-        PORT MAP (clk => videoClk, <other stuff>	);
+        PORT MAP (clk => videoClk, resetn => resetn, hs => hsync, vs => vsync, 
+                    de => vde, pixelHorz => pixelHorz, pixelVert => pixelVert);
                  
 
     sf: scopeFace
-        PORT MAP (clk => videoClk,	<other stuff>	);
+        PORT MAP (clk => videoClk,	resetn => resetn, pixelVert => pixelVert, pixelHorz => pixelHorz,
+                 triggerTime => triggerTime, triggerVolt => triggerVolt, ch1 => ch1Wave, ch1enb => '1',
+                ch2 => ch2Wave, ch2enb => '1', red => red, green => green, blue => blue);
                  
 
     hdmi_inst: hdmi_0
         PORT MAP (
-            pix_clk => videoClk,	<other stuff>	);
+            pix_clk => videoClk, pix_clkx5 => videoClk5x, reset => reset; hsync => hsync, vsync => vsync, vde => vde,
+            pix_clk_locked => clkLocked, red => red, green => green, blue => blue, TMDS_DATA_P => tmdsDataP, TMDS_DATA_N => tmdsDataN,
+            TMDS_CLK_P => tmdsClkP, TMDS_CLK_N => tmdsClkN, aux0_din => "0000", aux1_din => "0000", aux2_din => "0000", ade => '0');
             
-
     vc: clk_wiz_0
 	PORT MAP( 
 	    clk_out1 => videoClk,
@@ -79,8 +80,8 @@ begin
     begin 
         if rising_edge (sysClk) then
             if resetn = '0' then
-                triggerTime <= "001001110110"; -- 630 (half of scereen width ish)
-                triggerVolt <= "000101101000"; -- 360 (half of screen height)
+                triggerTime <= "01001110110"; -- 630 (half of scereen width ish)
+                triggerVolt <= "00101101000"; -- 360 (half of screen height)
             elsif activeButton(1) = '1' and currButton(1) = '1' then -- activeButton means it changed and currButton 1 means its been released
                 if currButton(0) = '0' then
                     -- increment triggerVoltage by 10 if PL_KEY3 is pressed and realeased while holding PL_KEY2
