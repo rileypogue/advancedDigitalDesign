@@ -60,9 +60,9 @@ begin
         if rising_edge (clk) then
           if resetn = '0' then
               hs <= '1';
-          elsif((h_cnt = H_FP - 1) and (v_cnt = V_FP - 1)) then
+          elsif((h_cnt = H_FP - 1) ) then
               hs <= '0';
-          elsif((h_cnt = H_FP + H_SYNC - 1) and (v_cnt = V_FP - 1)) then
+          elsif((h_cnt = H_FP + H_SYNC - 1) ) then
               hs <= '1';            
             end if;
         end if;
@@ -80,7 +80,7 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 pixelHorz <= (others => '0');
-            elsif(h_cnt = H_FP + H_SYNC + H_BP - 1) then
+            elsif (h_cnt >= H_FP + H_SYNC + H_BP - 1) then
                 pixelHorz <= h_cnt - (H_FP + H_SYNC + H_BP - 1);
             end if;
         end if;
@@ -93,12 +93,10 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 h_activeArea <= '0';
-            elsif((h_cnt = H_FP + H_SYNC + H_BP - 1) and (v_cnt = V_FP - 1))then
+            elsif ((h_cnt >= H_FP + H_SYNC) and (h_cnt <= H_FP + H_SYNC + H_ACTIVE)) then
                 h_activeArea <= '1';
-            elsif((h_cnt = (H_TOTAL - 1)) and (v_cnt = V_FP - 1)) then
+            else   
                 h_activeArea <= '0';
-            else
-                h_activeArea <= h_activeArea;
             end if;
         end if;
     end process;
@@ -127,9 +125,9 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 vs <= '1';
-            elsif((v_cnt = V_FP - 1) and (h_cnt = H_FP - 1)) then
+            elsif((v_cnt = V_FP - 1) ) then
                 vs <= '0';
-            elsif((v_cnt = V_FP + V_SYNC - 1) and (h_cnt = H_FP - 1)) then
+            elsif((v_cnt  = V_FP + V_SYNC - 1)) then
                 vs <= '1';            
             end if;
         end if;
@@ -156,9 +154,9 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 v_activeArea <= '0';
-            elsif((v_cnt = V_FP + V_SYNC + V_BP - 1) and (h_cnt = H_FP - 1))then
+            elsif((v_cnt = V_FP + V_SYNC + V_BP - 1))then
                 v_activeArea <= '1';
-            elsif((v_cnt = V_TOTAL - 1) and (h_cnt = H_FP - 1)) then
+            elsif((v_cnt = V_TOTAL - 1)) then
                 v_activeArea <= '0';
             else
                 v_activeArea <= v_activeArea;

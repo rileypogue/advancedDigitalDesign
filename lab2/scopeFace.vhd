@@ -38,9 +38,6 @@ architecture Behavioral of scopeFace is
 
 begin
 
-    
-    --ch1Enb <= '1';
-    --ch2Enb <= '2';
     ---------------------------------------------------------------------
     -- Use the Feature Booleans to set the RGB at this pixel location.
     -- The waveforms should sit "on top" of the grid.
@@ -70,16 +67,12 @@ begin
                     green <= BORDER_G;
                     blue <= BORDER_B;    
                     
-                elsif ((ch1 = '1')) then -- hatch marks are white
+                elsif ((ch1 = '1')) then 
                     red <= CH1_R;
                     green <= CH1_G;
                     blue <= CH1_B;             
 
-<<<<<<< Updated upstream
-                elsif ((ch1 = '2')) then -- hatch marks are white
-=======
-                elsif ((ch2 = '1')) then -- hatch marks are white
->>>>>>> Stashed changes
+                elsif ((ch2 = '1')) then
                     red <= CH2_R;
                     green <= CH2_G;
                     blue <= CH2_B; 

@@ -66,22 +66,22 @@ package scopeToHdmi_package is
     constant BORDER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
     -- Grid color is WHITE: FFFFFF
-    constant GRID_R   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant GRID_G   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant GRID_B   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant GRID_R   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
+    constant GRID_G   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
+    constant GRID_B   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
 
     -- Channel 1 is yellow: FFFF00
     constant CH1_R  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant CH1_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant CH1_B  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
 
-    -- Channel 2 is cyan: 00FFFF
-    constant CH2_R  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
+    -- Channel 2 is yellow: FFFF00
+    constant CH2_R  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant CH2_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant CH2_B  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant CH2_B  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
 
-    -- Trigger color is WHITE: FFFFFF
-    constant TRIGGER_R : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    -- Trigger color is cyan: FFFFFF
+    constant TRIGGER_R : STD_LOGIC_VECTOR(7 downto 0) := X"00";
     constant TRIGGER_G : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant TRIGGER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
