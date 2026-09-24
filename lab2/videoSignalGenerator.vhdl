@@ -80,7 +80,7 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 pixelHorz <= (others => '0');
-            elsif(h_cnt >= H_FP + H_SYNC + H_BP - 1) then
+            elsif(h_cnt = H_FP + H_SYNC + H_BP - 1) then
                 pixelHorz <= h_cnt - (H_FP + H_SYNC + H_BP - 1);
             end if;
         end if;
@@ -95,7 +95,7 @@ begin
                 h_activeArea <= '0';
             elsif((h_cnt = H_FP + H_SYNC + H_BP - 1) and (v_cnt = V_FP - 1))then
                 h_activeArea <= '1';
-            elsif((h_cnt = H_TOTAL - 1) and (v_cnt = V_FP - 1)) then
+            elsif((h_cnt = (H_TOTAL - 1)) and (v_cnt = V_FP - 1)) then
                 h_activeArea <= '0';
             else
                 h_activeArea <= h_activeArea;

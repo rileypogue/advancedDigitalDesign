@@ -25,6 +25,7 @@ architecture structure of scopeToHdmi is
     signal prevButton, currButton, activeButton : STD_LOGIC_VECTOR(2 downto 0);
     signal ch1Wave, ch2Wave: STD_LOGIC;
     signal videoClk, videoClk5x, clkLocked: STD_LOGIC;
+    signal hsync, vsync, vde, reset: STD_LOGIC;
 
 begin
 
@@ -40,9 +41,9 @@ begin
                 ch2 => ch2Wave, ch2enb => '1', red => red, green => green, blue => blue);
                  
 
-    hdmi_inst: hdmi_0
+    hdmi_inst: hdmi_tx_0
         PORT MAP (
-            pix_clk => videoClk, pix_clkx5 => videoClk5x, reset => reset; hsync => hsync, vsync => vsync, vde => vde,
+            pix_clk => videoClk, pix_clkx5 => videoClk5x, rst => reset, hsync => hsync, vsync => vsync, vde => vde,
             pix_clk_locked => clkLocked, red => red, green => green, blue => blue, TMDS_DATA_P => tmdsDataP, TMDS_DATA_N => tmdsDataN,
             TMDS_CLK_P => tmdsClkP, TMDS_CLK_N => tmdsClkN, aux0_din => "0000", aux1_din => "0000", aux2_din => "0000", ade => '0');
             
@@ -104,5 +105,7 @@ begin
 
     ch1Wave <= '1' when  (pixelHorz = pixelVert) else '0';
     ch2Wave <= '1' when  (pixelVert = triggerVolt) else '0';
+
+    reset <= not resetn;
 
 end structure;

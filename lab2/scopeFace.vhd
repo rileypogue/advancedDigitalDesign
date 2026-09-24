@@ -34,15 +34,13 @@ architecture Behavioral of scopeFace is
     signal borderH, borderV, gridH, gridV, hatchH, hatchV : STD_LOGIC;
     constant HATCHH_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(640, VIDEO_WIDTH_IN_BITS));
     constant HATCHV_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(360, VIDEO_WIDTH_IN_BITS));
-    
-    ch1Enb <= '1';
-    ch2Enb <= '2';
-
 
 
 begin
 
-
+    
+    --ch1Enb <= '1';
+    --ch2Enb <= '2';
     ---------------------------------------------------------------------
     -- Use the Feature Booleans to set the RGB at this pixel location.
     -- The waveforms should sit "on top" of the grid.
@@ -77,7 +75,11 @@ begin
                     green <= CH1_G;
                     blue <= CH1_B;             
 
+<<<<<<< Updated upstream
                 elsif ((ch1 = '2')) then -- hatch marks are white
+=======
+                elsif ((ch2 = '1')) then -- hatch marks are white
+>>>>>>> Stashed changes
                     red <= CH2_R;
                     green <= CH2_G;
                     blue <= CH2_B; 
@@ -228,5 +230,3 @@ hatchH <= '1' when (
      else '0';        
 
 end Behavioral;
-
-
