@@ -55,18 +55,6 @@ begin
                     green <= BORDER_G;
                     blue <= BORDER_B;
                     
-                -- Grid Line Colors    
-                elsif ((gridH = '1') or (gridV = '1')) then -- grid marks are white
-                    red <= BORDER_R;
-                    green <= BORDER_G;
-                    blue <= BORDER_B;
-                    
-               -- Hatch Mark Colors
-                elsif ((hatchH = '1') or (hatchV = '1')) then -- hatch marks are white
-                    red <= BORDER_R;
-                    green <= BORDER_G;
-                    blue <= BORDER_B;    
-                    
                 elsif ((ch1 = '1')) then 
                     red <= CH1_R;
                     green <= CH1_G;
@@ -75,6 +63,17 @@ begin
                 elsif ((ch2 = '1')) then
                     red <= CH2_R;
                     green <= CH2_G;
+                -- Grid Line Colors    
+                elsif ((gridH = '1') or (gridV = '1')) then -- grid marks are white
+                    red <= GRID_R;
+                    green <= GRID_G;
+                    blue <= GRID_B;
+                    
+               -- Hatch Mark Colors
+                elsif ((hatchH = '1') or (hatchV = '1')) then -- hatch marks are white
+                    red <= GRID_R;
+                    green <= GRID_G;
+                    blue <= GRID_B;    
                     blue <= CH2_B; 
               
                 else -- this is the background color
