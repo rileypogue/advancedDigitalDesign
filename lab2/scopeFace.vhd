@@ -31,12 +31,18 @@ architecture Behavioral of scopeFace is
     -- Set these signals to '1' when the features should be drawn at the current pixelHorz, pixelVert 
     -- cordinate.  These act like Feature Booleans which you will use in the process(clk) to set the 
     -- correct RGB for this pixel location. Finish and add more.
-    signal borderH, borderV, gridH, gridV, hatchH, hatchV : STD_LOGIC;
+    signal borderH, borderV, gridH, gridV, hatchH, hatchV, ch1T, ch2V : STD_LOGIC;
     constant HATCHH_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(640, VIDEO_WIDTH_IN_BITS));
     constant HATCHV_CENTER :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(360, VIDEO_WIDTH_IN_BITS));
+    constant TRIANGLE_WIDTH:   std_logic_vector(3 downto 0) := "1111";
+
+    
+
 
 
 begin
+
+
 
     ---------------------------------------------------------------------
     -- Use the Feature Booleans to set the RGB at this pixel location.
@@ -50,31 +56,46 @@ begin
                 green <= (others => '0');
                 blue <= (others => '0');
             else
-                if ((borderH = '1') or (borderV = '1')) then
+                if ((ch1T = '1')) then -- hatch marks are white
+                    red <= CH1_R;
+                    green <= CH1_G;
+                    blue <= CH1_B;
+
+                elsif ((ch2V = '1')) then -- hatch marks are white
+                    red <= CH2_R;
+                    green <= CH2_G;
+                    blue <= CH2_B;
+                    
+                elsif ((ch1 = '1')) then -- hatch marks are white
+                    red <= CH1_R;
+                    green <= CH1_G;
+                    blue <= CH1_B;
+
+                elsif ((ch2 = '1')) then -- hatch marks are white
+                    red <= CH2_R;
+                    green <= CH2_G;
+                    blue <= CH2_B;
+                    
+                     
+                elsif (((borderH = '1') or (borderV = '1')) and ((ch1T /= '1') or (ch2V  /= '1'))) then
                     red <= BORDER_R; -- defined in package file!!!
                     green <= BORDER_G;
                     blue <= BORDER_B;
                     
-                elsif ((ch1 = '1')) then 
-                    red <= CH1_R;
-                    green <= CH1_G;
-                    blue <= CH1_B;             
-
-                elsif ((ch2 = '1')) then
-                    red <= CH2_R;
-                    green <= CH2_G;
                 -- Grid Line Colors    
                 elsif ((gridH = '1') or (gridV = '1')) then -- grid marks are white
-                    red <= GRID_R;
-                    green <= GRID_G;
-                    blue <= GRID_B;
+                    red <= BORDER_R;
+                    green <= BORDER_G;
+                    blue <= BORDER_B;
                     
-               -- Hatch Mark Colors
+                -- Hatch Mark Colors
                 elsif ((hatchH = '1') or (hatchV = '1')) then -- hatch marks are white
-                    red <= GRID_R;
-                    green <= GRID_G;
-                    blue <= GRID_B;    
-                    blue <= CH2_B; 
+                    red <= BORDER_R;
+                    green <= BORDER_G;
+                    blue <= BORDER_B;    
+                    
+
+
               
                 else -- this is the background color
                     red <= X"00";
@@ -85,17 +106,18 @@ begin
         end if;
     end process;
 
-    -- LEFT AND RIGHT BORDERS     
-    borderH <=	'1' when ( (pixelHorz > L_EDGE - BORDER_LINE_WIDTH) and (pixelHorz < L_EDGE + BORDER_LINE_WIDTH) 
-                            and (pixelVert > T_EDGE) and (pixelVert < B_EDGE))
-                    or   ( (pixelHorz > R_EDGE - BORDER_LINE_WIDTH) and (pixelHorz < R_EDGE + BORDER_LINE_WIDTH) 
-                            and (pixelVert > T_EDGE) and (pixelVert < B_EDGE))
+-- LEFT AND RIGHT BORDERS     
+    borderH <=  '1' when ( (pixelHorz >= L_EDGE) and (pixelHorz <= L_EDGE + BORDER_LINE_WIDTH) 
+                            and (pixelVert >= T_EDGE) and (pixelVert <= B_EDGE))
+                    or   ( (pixelHorz <= R_EDGE) and (pixelHorz >= R_EDGE - BORDER_LINE_WIDTH) 
+                            and (pixelVert >= T_EDGE) and (pixelVert <= B_EDGE))
          else '0';
-    -- TOP AND BOTTOM BORDERS          
-    borderV <=	'1' when ( (pixelVert > T_EDGE - BORDER_LINE_WIDTH) and (pixelVert < T_EDGE + BORDER_LINE_WIDTH) 
-                            and (pixelHorz > L_EDGE) and (pixelHorz < R_EDGE))
-                    or   ( (pixelVert > B_EDGE - BORDER_LINE_WIDTH) and (pixelVert < B_EDGE + BORDER_LINE_WIDTH) 
-                            and (pixelHorz > L_EDGE) and (pixelHorz < R_EDGE))
+         
+    -- TOP AND BOTTOM BORDERS         
+    borderV <=  '1' when ( (pixelVert >= T_EDGE) and (pixelVert <= T_EDGE + BORDER_LINE_WIDTH) 
+                            and (pixelHorz >= L_EDGE) and (pixelHorz <= R_EDGE))
+                    or   ( (pixelVert <= B_EDGE) and (pixelVert >= B_EDGE - BORDER_LINE_WIDTH) 
+                            and (pixelHorz >= L_EDGE) and (pixelHorz <= R_EDGE))
          else '0';
     -- HORIZONTAL GRID LINES                                          
  --ACG CODE DOWN HERE!!!
@@ -110,15 +132,15 @@ begin
                          pixelVert = (T_EDGE + 648)  
      else '0'; 
 -- vertical grid lines
-    gridV <= '1' when pixelVert = (L_EDGE + 72) or 
-                         pixelHorz = (L_EDGE + 200) or 
-                         pixelHorz = (L_EDGE + 328) or 
-                         pixelHorz = (L_EDGE + 456) or 
-                         pixelHorz = (L_EDGE + 584) or 
-                         pixelHorz = (L_EDGE + 712) or 
-                         pixelHorz = (L_EDGE + 840) or 
-                         pixelHorz = (L_EDGE + 968) or 
-                         pixelHorz = (L_EDGE + 1096)  
+    gridV <= '1' when pixelHorz = (L_EDGE + 128) or 
+                         pixelHorz = (L_EDGE + 256) or 
+                         pixelHorz = (L_EDGE + 384) or 
+                         pixelHorz = (L_EDGE + 512) or 
+                         pixelHorz = (L_EDGE + 640) or 
+                         pixelHorz = (L_EDGE + 768) or 
+                         pixelHorz = (L_EDGE + 896) or 
+                         pixelHorz = (L_EDGE + 1024) or 
+                         pixelHorz = (L_EDGE + 1152)  
                          else '0'; 
  
 -- horizontal hatches                        
@@ -219,6 +241,22 @@ hatchH <= '1' when (
                pixelHorz = (L_EDGE + 1229) or 
                pixelHorz = (L_EDGE + 1254)
            )
-     else '0';        
+     else '0';  
+     
+    -- Time Marker Triangle (Top edge, pointing down to TriggerTime)
+    ch1T <= '1' when 
+        (pixelVert <= TRIANGLE_WIDTH) and 
+        (pixelHorz >= (TriggerTime - TRIANGLE_WIDTH + pixelVert)) and 
+        (pixelHorz <= (TriggerTime + TRIANGLE_WIDTH - pixelVert))
+    else '0'; 
+
+    -- Voltage Marker Triangle (Left edge, pointing right to TriggerVoltage)
+    ch2V <= '1' when 
+        (pixelHorz <= TRIANGLE_WIDTH) and 
+        (pixelVert >= (TriggerVolt - TRIANGLE_WIDTH + pixelHorz)) and 
+        (pixelVert <= (TriggerVolt + TRIANGLE_WIDTH - pixelHorz))
+    else '0';
 
 end Behavioral;
+
+

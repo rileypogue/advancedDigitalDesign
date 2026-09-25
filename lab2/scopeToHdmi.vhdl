@@ -1,5 +1,7 @@
 ----------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -25,11 +27,12 @@ architecture structure of scopeToHdmi is
     signal prevButton, currButton, activeButton : STD_LOGIC_VECTOR(2 downto 0);
     signal ch1Wave, ch2Wave: STD_LOGIC;
     signal videoClk, videoClk5x, clkLocked: STD_LOGIC;
-    signal hsync, vsync, vde, reset: STD_LOGIC;
+    signal vde, hsync, vsync: STD_LOGIC;
+    signal hdmiReset:  STD_LOGIC;
 
 begin
 
-
+    hdmiOen <= '1';
     vsg: videoSignalGenerator
         PORT MAP (clk => videoClk, resetn => resetn, hs => hsync, vs => vsync, 
                     de => vde, pixelHorz => pixelHorz, pixelVert => pixelVert);
@@ -37,13 +40,14 @@ begin
 
     sf: scopeFace
         PORT MAP (clk => videoClk,	resetn => resetn, pixelVert => pixelVert, pixelHorz => pixelHorz,
-                 triggerTime => triggerTime, triggerVolt => triggerVolt, ch1 => ch1Wave, ch1enb => '1',
+                 triggerTime => triggerTime, triggerVolt => triggerVolt, ch1 => Ch1Wave, ch1enb => '1', -- change c1 back to ch1Wave post testing
                 ch2 => ch2Wave, ch2enb => '1', red => red, green => green, blue => blue);
                  
-
+    hdmiReset <= not resetn;
+    
     hdmi_inst: hdmi_tx_0
         PORT MAP (
-            pix_clk => videoClk, pix_clkx5 => videoClk5x, rst => reset, hsync => hsync, vsync => vsync, vde => vde,
+            pix_clk => videoClk, pix_clkx5 => videoClk5x, rst => hdmiReset, hsync => hsync, vsync => vsync, vde => vde,
             pix_clk_locked => clkLocked, red => red, green => green, blue => blue, TMDS_DATA_P => tmdsDataP, TMDS_DATA_N => tmdsDataN,
             TMDS_CLK_P => tmdsClkP, TMDS_CLK_N => tmdsClkN, aux0_din => "0000", aux1_din => "0000", aux2_din => "0000", ade => '0');
             
@@ -105,7 +109,5 @@ begin
 
     ch1Wave <= '1' when  (pixelHorz = pixelVert) else '0';
     ch2Wave <= '1' when  (pixelVert = triggerVolt) else '0';
-
-    reset <= not resetn;
 
 end structure;

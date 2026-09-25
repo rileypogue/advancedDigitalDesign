@@ -48,12 +48,12 @@ package scopeToHdmi_package is
     constant V_BP :	    STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(20, VIDEO_WIDTH_IN_BITS));
     constant V_TOTAL :  STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := V_ACTIVE + V_FP + V_SYNC + V_BP; -- adds up all of our porches
         
-    constant L_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(100, VIDEO_WIDTH_IN_BITS)); -- where the left edge is (in pixels) on our actual screen)
-    constant R_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1380, VIDEO_WIDTH_IN_BITS));
+    constant L_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(0, VIDEO_WIDTH_IN_BITS)); -- where the left edge is (in pixels) on our actual screen)
+    constant R_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1280, VIDEO_WIDTH_IN_BITS));
     constant WIDTH :    STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(1280, VIDEO_WIDTH_IN_BITS));
 
-    constant T_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(100, VIDEO_WIDTH_IN_BITS));
-    constant B_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(850, VIDEO_WIDTH_IN_BITS));
+    constant T_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(0, VIDEO_WIDTH_IN_BITS));
+    constant B_EDGE :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(720, VIDEO_WIDTH_IN_BITS));
     constant HEIGHT :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(720, VIDEO_WIDTH_IN_BITS));
 	
     -- This is actually half of the width
@@ -66,22 +66,22 @@ package scopeToHdmi_package is
     constant BORDER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
     -- Grid color is WHITE: FFFFFF
-    constant GRID_R   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
-    constant GRID_G   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
-    constant GRID_B   : STD_LOGIC_VECTOR(7 downto 0) := X"40";
+    constant GRID_R   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant GRID_G   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant GRID_B   : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
     -- Channel 1 is yellow: FFFF00
     constant CH1_R  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant CH1_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
+    constant CH1_G  : STD_LOGIC_VECTOR(7 downto 0) := X"BF";
     constant CH1_B  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
 
-    -- Channel 2 is yellow: FFFF00
-    constant CH2_R  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant CH2_G  : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
-    constant CH2_B  : STD_LOGIC_VECTOR(7 downto 0) := X"00";
+    -- Channel 2 is cyan: 00FFFF
+    constant CH2_R  : STD_LOGIC_VECTOR(7 downto 0) := X"E0";
+    constant CH2_G  : STD_LOGIC_VECTOR(7 downto 0) := X"21";
+    constant CH2_B  : STD_LOGIC_VECTOR(7 downto 0) := X"8A";
 
-    -- Trigger color is cyan: FFFFFF
-    constant TRIGGER_R : STD_LOGIC_VECTOR(7 downto 0) := X"00";
+    -- Trigger color is WHITE: FFFFFF
+    constant TRIGGER_R : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant TRIGGER_G : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
     constant TRIGGER_B : STD_LOGIC_VECTOR(7 downto 0) := X"FF";
 
@@ -120,6 +120,7 @@ component clk_wiz_0 is
         locked: out STD_LOGIC;
         clk_in1: in STD_LOGIC);
 end component;
+
 
 component hdmi_tx_0 is
     PORT (
