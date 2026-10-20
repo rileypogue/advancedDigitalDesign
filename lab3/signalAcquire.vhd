@@ -65,31 +65,24 @@ begin
     begin
         if rising_edge (clk) then
             if resetn = '0' then
-                prevButton <= "111";
-                currButton <= "111";
-                activeButton <= "000";
+                prevButton <= "000";
+                currButton <= "000";
             else
                 prevButton <= currButton;
                 currButton <= btn;
-                activeButton <= currButton xor prevButton;
+                if prevButton(0) = '0' and btn(0) = '1'  then
+                    convst <= '1';
+                elsif activeButton(1) = '0' and btn(1) = '1' then
+                    convst <= '1';
+                elsif activeButton(2) = '0' and btn(2) = '1' then
+                    convst <= '1';
+                else
+                    convst <= '0';
+                end if;
             end if;
         end if;
     end process;
 
-    process(clk)
-    begin
-        if rising_edge (clk) then
-            if activeButton(0) = '1' and currButton(0) = '1'  then
-                convst <= '1';
-            elsif activeButton(1) = '1' and currButton(1) = '1' then
-                convst <= '1';
-            elsif activeButton(2) = '1' and currButton(2) = '1' then
-                convst <= '1';
-            else
-                convst <= '0';
-            end if;
-        end if;
-    end process;
 
     -- PL BUTTON comparators
     comapare1 : genericCompare

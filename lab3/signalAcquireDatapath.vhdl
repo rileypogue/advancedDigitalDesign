@@ -34,20 +34,21 @@ entity signalAcquire_Datapath is
 end signalAcquire_Datapath;
 
 architecture behavior of signalAcquire_Datapath is
-
     signal short_counter_control : STD_LOGIC_VECTOR(1 downto 0);
     signal long_counter_control : STD_LOGIC_VECTOR(1 downto 0);
     signal rf_counter_control : STD_LOGIC_VECTOR(1 downto 0);
     signal short_counts: STD_LOGIC_VECTOR(SHORT_DELAY_50Mhz_CONST_WIDTH - 1 downto 0);
     signal long_counts : STD_LOGIC_VECTOR(LONG_DELAY_50Mhz_CONST_WIDTH - 1 downto 0);
     signal rf_counts: STD_LOGIC_VECTOR(3 downto 0);
-    signal rf_counts_int : STD_uofjmAESI signal rf_control, short_timer_done, long_timer_done, rf_equals7 : STD_LOGIC;
-    signal zeros : STD_LOGIC_VEuTOR(LONG_DELAY_50Mhz_CONST_WIDTH - 1 downto 0) := (others => '0');
+    signal rf_counts_int : STD_LOGIC_VECTOR(2 downto 0);
+    signal rf_control, short_timer_done, long_timer_done, rf_equals7 : STD_LOGIC;
+    signal zeros : STD_LOGIC_VECTOR(LONG_DELAY_50Mhz_CONST_WIDTH - 1 downto 0) := (others => '0');
 begin
     -- we need 3 counters, 3 comparators, and reg file
     short_counter_control <= cw(4 downto 3);
     long_counter_control <= cw(6 downto 5);
     rf_counter_control <= cw(2 downto 1);
+    rf_control <= cw(REF_FILE_WRITE_CW_BIT_INDEX);
     
     sw <= rf_equals7 & short_timer_done & long_timer_done; 
 

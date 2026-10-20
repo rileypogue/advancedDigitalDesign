@@ -45,7 +45,7 @@ begin
     -- logic in the state_process much easier and thus, you'll make fewer errors.
     SHORT_DELAY_DONE_SW <= sw(SHORT_DELAY_DONE_SW_BIT_INDEX);
     LONG_DELAY_DONE_SW <= sw(LONG_DELAY_DONE_SW_BIT_INDEX);
-    READ_ALL_CHANNELS_SW <= sw(LONG_DELAY_DONE_SW_BIT_INDEX);
+    READ_ALL_CHANNELS_SW <= sw(ALL_CHANNELS_HAVE_BEEN_READ_SW_BIT_INDEX);
     START_CONV_SW <= sw(START_CONV_SW_BIT_INDEX);
     BUSY_SW <= sw(BUSY_SW_BIT_INDEX);
     
@@ -58,10 +58,8 @@ begin
 				state <= RESET_STATE;
 			else 
 				case state is
-
                     when RESET_STATE =>
                         state <= long_delay;
-                    
                     when long_delay =>
                         if LONG_DELAY_DONE_SW = '1' then
                             state <= reset_AD7606;
@@ -87,7 +85,7 @@ begin
                             state <= assert_convst;
                         end if;
                     when wait_busy_0 =>
-                        if BUSY_SW = '1' then -- busy acttive high
+                        if BUSY_SW = '0' then -- busy acttive high
                             state <= wait_busy_0;
                         else
                             state <= wait_busy_1;
@@ -141,9 +139,9 @@ begin
 	output_process: process (state)
 	begin
 	    case state is
-                when RESET_STATE =>            cw <= "1111" & RESET_COUNTER & RESET_COUNTER & RESET_COUNTER & "0";
+                when RESET_STATE =>            cw <= "1110" & RESET_COUNTER & RESET_COUNTER & RESET_COUNTER & "0";
                 when long_delay =>             cw <= "1110" & COUNT_UP & RESET_COUNTER & HOLD & "0";
-                when reset_AD7606 =>            cw <= "1111" & RESET_COUNTER & COUNT_UP & HOLD & "0";
+                when reset_AD7606 =>           cw <= "1111" & RESET_COUNTER & COUNT_UP & HOLD & "0";
                 when wait_trigger =>           cw <= "1110" & HOLD & RESET_COUNTER & HOLD & "0";
                 when assert_convst =>          cw <= "0110" & HOLD & COUNT_UP & HOLD & "0";
                 when wait_busy_0 =>            cw <= "1110" & HOLD & RESET_COUNTER & HOLD & "0";
@@ -152,10 +150,8 @@ begin
                 when latch =>                  cw <= "1100" & HOLD & RESET_COUNTER & HOLD & "1";
                 when pause_between_channels => cw <= "1000" & HOLD & COUNT_UP & HOLD & "0";
                 when clear_short_counter =>    cw <= "1100" & HOLD & RESET_COUNTER & COUNT_UP & "0";
-
 		end case;
 	end process;
-
 end Behavioral;
 
 
