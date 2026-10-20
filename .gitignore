@@ -1,13 +1,15 @@
+# Ignore Vivado project files
 *.xpr
 
-	lab2/.cxl/
-	lab2/lab2.cache/
-	lab2/lab2.gen/
-	lab2/lab2.hw/
-	lab2/lab2.ip_user_files/
-	lab2/lab2.runs/
-	lab2/lab2.sim/
-	lab2/lab2.srcs/
-	lab2/nlviewcommon.logfile
-	lab2/xvlog.pb
+# Ignore Vivado generated directories for all labs
+lab*/.cxl/
+lab*/*.cache/
+lab*/*.gen/
+lab*/*.hw/
+lab*/*.ip_user_files/
+lab*/*.runs/
+lab*/*.sim/
 
+# Ignore Vivado generated log files
+lab*/nlviewcommon.logfile
+lab*/xvlog.pb
