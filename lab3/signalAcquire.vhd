@@ -72,23 +72,17 @@ begin
             else
                 prevButton <= currButton;
                 currButton <= btn;
-                if prevButton(0) = '0' and btn(0) = '1'  then
-                    convst <= '1';
-                    --reg0Magnitude <= PL_LEDS;
-                elsif activeButton(1) = '0' and btn(1) = '1' then
-                    convst <= '1';
-                    --reg0Magnitude <= PL_LEDS;
-                elsif activeButton(2) = '0' and btn(2) = '1' then
-                    convst <= '1';
-                    --reg0Magnitude <= PL_LEDS;
-                else
-                    convst <= '0';
-                end if;
+                activeButton <= currButton xor prevButton;
             end if;
         end if;
     end process;
 
-    -- PL BUTTON comparators
+
+    convst <= '1' when (currButton(0) = '1' and activeButton(0) = '0') or
+                   (currButton(1) = '1' and activeButton(1) = '0') or
+                   (currButton(2) = '1' and activeButton(2) = '0') else
+          '0';    
+
     comapare1 : genericCompare
         generic map (N=> 16)
         port map(x=> rfData, y => FIRST_THRESHOLD_CONSTANT, g => PL_LEDS(3), l => open, e=> open);
