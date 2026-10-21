@@ -39,7 +39,8 @@ architecture behavior of signalAcquire is
     signal prevButton, currButton, activeButton : STD_LOGIC_VECTOR(2 downto 0);
     signal convst : STD_LOGIC := '0';
     signal rfData : STD_LOGIC_VECTOR(15 downto 0);
-    signal PL_LEDS : STD_LOGIC_VECTOR(3 downto 0);
+    signal PL_LEDS : STD_LOGIC_VECTOR(3 downto 0) := "0000";
+    signal aboveThreshold : STD_LOGIC_VECTOR(3 downto 0);
 
 begin
     datapath : signalAcquire_Datapath 
@@ -52,6 +53,9 @@ begin
     controlUnit : signalAcquire_Fsm
         PORT MAP (clk => clk, resetn => resetn, sw => fsm_sw, cw => cw);
 
+    -- ADC data is 2's complement; the comparators are unsigned, so a negative
+    -- sample (sign bit set) would look larger than every threshold.
+    PL_LEDS <= aboveThreshold when rfData(15) = '0' else "0000";
     reg0Magnitude <= PL_LEDS;
 
 
@@ -69,6 +73,7 @@ begin
             if resetn = '0' then
                 prevButton <= "000";
                 currButton <= "000";
+                activeButton <= "000";
             else
                 prevButton <= currButton;
                 currButton <= btn;
@@ -78,25 +83,22 @@ begin
     end process;
 
 
-    convst <= '1' when (currButton(0) = '1' and activeButton(0) = '0') or
-                   (currButton(1) = '1' and activeButton(1) = '0') or
-                   (currButton(2) = '1' and activeButton(2) = '0') else
-          '0';    
+    convst <= '1' when (currButton(0) = '0' and activeButton(0) = '1') else '0';    
 
     comapare1 : genericCompare
         generic map (N=> 16)
-        port map(x=> rfData, y => FIRST_THRESHOLD_CONSTANT, g => PL_LEDS(3), l => open, e=> open);
+        port map(x=> rfData, y => FIRST_THRESHOLD_CONSTANT, g => aboveThreshold(3), l => open, e=> open);
 
     comapare2 : genericCompare
         generic map (N=> 16)
-        port map(x=> rfData, y => SECOND_THRESHOLD_CONSTANT, g => PL_LEDS(2), l => open, e=> open);
+        port map(x=> rfData, y => SECOND_THRESHOLD_CONSTANT, g => aboveThreshold(2), l => open, e=> open);
 
     comapare3 : genericCompare
         generic map (N=> 16)
-        port map(x=> rfData, y => THIRD_THRESHOLD_CONSTANT, g => PL_LEDS(1), l => open, e=> open);
+        port map(x=> rfData, y => THIRD_THRESHOLD_CONSTANT, g => aboveThreshold(1), l => open, e=> open);
 
     comapare4 : genericCompare
         generic map (N=> 16)
-        port map(x=> rfData, y => FOURTH_THRESHOLD_CONSTANT, g => PL_LEDS(0), l => open, e=> open);
+        port map(x=> rfData, y => FOURTH_THRESHOLD_CONSTANT, g => aboveThreshold(0), l => open, e=> open);
 end behavior;
 

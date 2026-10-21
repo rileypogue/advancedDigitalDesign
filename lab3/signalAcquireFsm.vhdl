@@ -32,10 +32,10 @@ end signalAcquire_Fsm;
 architecture Behavioral of signalAcquire_Fsm is
 
 	signal state: state_type;
-    signal HOLD : STD_LOGIC_VECTOR(1 downto 0) := "00";
-    signal LOAD : STD_LOGIC_VECTOR(1 downto 0) := "01";
-    signal COUNT_UP : STD_LOGIC_VECTOR(1 downto 0) := "10";
-    signal RESET_COUNTER : STD_LOGIC_VECTOR(1 downto 0) := "11";
+    constant HOLD : STD_LOGIC_VECTOR(1 downto 0) := "00";
+    constant LOAD : STD_LOGIC_VECTOR(1 downto 0) := "01";
+    constant COUNT_UP : STD_LOGIC_VECTOR(1 downto 0) := "10";
+    constant RESET_COUNTER : STD_LOGIC_VECTOR(1 downto 0) := "11";
 
 	signal SHORT_DELAY_DONE_SW, READ_ALL_CHANNELS_SW, LONG_DELAY_DONE_SW, START_CONV_SW, BUSY_SW : STD_LOGIC;
 
