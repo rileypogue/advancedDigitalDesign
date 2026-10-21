@@ -148,7 +148,7 @@ begin
                 when wait_busy_1 =>            cw <= "1110" & HOLD & HOLD & RESET_COUNTER & "0";
                 when wait_valid_data =>        cw <= "1000" & HOLD & COUNT_UP & HOLD & "0";
                 when latch =>                  cw <= "1100" & HOLD & RESET_COUNTER & HOLD & "1";
-                when pause_between_channels => cw <= "1000" & HOLD & COUNT_UP & HOLD & "0";
+                when pause_between_channels => cw <= "1100" & HOLD & COUNT_UP & HOLD & "0";
                 when clear_short_counter =>    cw <= "1100" & HOLD & RESET_COUNTER & COUNT_UP & "0";
 		end case;
 	end process;

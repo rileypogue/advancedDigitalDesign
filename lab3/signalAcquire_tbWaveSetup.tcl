@@ -35,5 +35,7 @@ add_wave   -color gold -radix hex	/signalAcquire_tb/uut/datapath/regFile/Q6
 add_wave   -color gold -radix hex	/signalAcquire_tb/uut/datapath/regFile/Q7
 
 
+add_wave   -color gold -radix hex	/signalAcquire_tb/uut/rfData
+add_wave   -color gold -radix hex	/signalAcquire_tb/uut/PL_LEDS
 
 

@@ -52,12 +52,14 @@ begin
     controlUnit : signalAcquire_Fsm
         PORT MAP (clk => clk, resetn => resetn, sw => fsm_sw, cw => cw);
 
+    reg0Magnitude <= PL_LEDS;
+
+
     an7606convst <= cw(CONVST_CW_BIT_INDEX);
     an7606cs <= cw(CS_CW_BIT_INDEX);
     an7606rd <= cw(RD_CW_BIT_INDEX);
     an7606reset <= cw(RESET_AD7606_CW_BIT_INDEX);
 
-    reg0Magnitude <= PL_LEDS;
     an7606od <= "000";
 
     -- button processes, convert when any button has been pressed and released
@@ -72,17 +74,19 @@ begin
                 currButton <= btn;
                 if prevButton(0) = '0' and btn(0) = '1'  then
                     convst <= '1';
+                    --reg0Magnitude <= PL_LEDS;
                 elsif activeButton(1) = '0' and btn(1) = '1' then
                     convst <= '1';
+                    --reg0Magnitude <= PL_LEDS;
                 elsif activeButton(2) = '0' and btn(2) = '1' then
                     convst <= '1';
+                    --reg0Magnitude <= PL_LEDS;
                 else
                     convst <= '0';
                 end if;
             end if;
         end if;
     end process;
-
 
     -- PL BUTTON comparators
     comapare1 : genericCompare
@@ -101,3 +105,4 @@ begin
         generic map (N=> 16)
         port map(x=> rfData, y => FOURTH_THRESHOLD_CONSTANT, g => PL_LEDS(0), l => open, e=> open);
 end behavior;
+
