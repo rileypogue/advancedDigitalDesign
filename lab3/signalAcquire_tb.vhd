@@ -80,14 +80,7 @@ BEGIN
         btn_t <= "001";
         wait for 4*clk_period;
         btn_t <= "000";
-        wait for 500*clk_period;
-        btn_t <= "010";
-        wait for 3*clk_period;
-        btn_t <= "000";
-        wait for 500*clk_period;
-        btn_t <= "100";
-        wait for 5*clk_period;
-        btn_t <= "000";   
-       end process;   
+        wait;
+    end process;   
 
 END behavior;

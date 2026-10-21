@@ -56,6 +56,7 @@ begin
         generic map (N=> SHORT_DELAY_50Mhz_CONST_WIDTH)
         port map (clk => clk, resetn => resetn, c => short_counter_control, d => "00000000", q=> short_counts);
 
+
     longCounter : genericCounter
         generic map (N=> LONG_DELAY_50Mhz_CONST_WIDTH)
         port map (clk => clk, resetn => resetn, c => long_counter_control, d => zeros, q=> long_counts);
