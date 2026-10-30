@@ -126,7 +126,7 @@ begin
     --      cw              Purpose
     -- 7 an7606convst
     -- 6 an7606cs
-    -- 5 an7606rs
+    -- 5 an7606rd
     -- 4 an7606rsest
     -- 3 longDelay
     -- 2 shortDelay
