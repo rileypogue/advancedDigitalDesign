@@ -63,6 +63,11 @@ architecture behavior of acquireToHDMI_datapath is
     signal sample_counts, SAMPLE_COMPARISON : STD_LOGIC_VECTOR(31 downto 0);
     signal short_timer_done, long_timer_done, sampling_done : STD_LOGIC_VECTOR;
 
+    -- trigger logic signals -- 
+    signal trig1_reg_control, trig2_reg_control : STD_LOGIC; 
+    signal trig1_curr_value_greater_than_thresh, trig2_curr_greater_than_thresh, trig1_last_less_than_thresh, trig2_last_less_than_thresh : STD_LOGIC;
+    signal last_SLV1, last_SLV2 : STD_LOGIC_VECTOR(15 downto 0);
+
     
 begin
     -- control word assignments
@@ -78,7 +83,7 @@ begin
 
     shortCounter : genericCounter
         generic map (N=> SHORT_DELAY_50Mhz_CONST_WIDTH)
-        port map (clk => clk, resetn => resetn, c => short_counter_control, d => "00000000", q=> short_counts);
+        port map (clk => clk, resetn => resetn, c => short_counter_control, d => (others => '0'), q=> short_counts);
 
     longCounter : genericCounter
         generic map (N=> LONG_DELAY_50Mhz_CONST_WIDTH)
@@ -103,6 +108,43 @@ begin
     sampleMux : genericMux4x1
         generic map (N => 32)
         port map (y3 => LOW_RATE, y2 => LOWEST_RATE, y1 => HIGH_RATE, y0 => HIGHEST_RATE, s=> sample_mux_control, f=> SAMPLE_COMPARISON)
+
+    gReg1 : genericRegister 
+        generic map(N => 16)
+        port map (clk => clk, resetn => resetn, load=>trig1_reg_control, d=an7606data, q=>ch1Data16bitSLV);
+
+    lReg1 : genericRegister
+        generic map (N => 16)
+        port map (clk => clk, resetn=> resetn, load = trig1_reg_control, d=ch1Data16bitSLV, q=> last_SLV1);
+
+    gReg1 : genericCompare
+        generic map (N => 16)
+        port map(x => ch1Data16bitSLV, y => triggerVolt16bitSigned, g => trig1_curr_value_greater_than_thresh, l => open , e => open);
+
+    lReg1 : genericCompare
+        generic map (N => 16)
+        port map(x => last_SLV1, y => triggerVolt16bitSignedm, g => open, l => trig1_last_less_than_thresh, e => open);
+
+    sw(CH1_TRIG_SW_BIT_INDEX) => trig1_curr_value_greater_than_thresh and trig1_last_less_than_thresh;
+
+    gReg2 : genericRegister 
+        generic map(N => 16)
+        port map (clk => clk, resetn => resetn, load=>trig2_reg_control, d=an7606data, q=>ch2Data16bitSLV);
+
+    lReg2 : genericRegister
+        generic map (N => 16)
+        port map (clk => clk, resetn=> resetn, load = trig2_reg_control, d=ch2Data16bitSLV, q=> last_SLV2);
+
+    gReg2 : genericCompare
+        generic map (N => 16)
+        port map(x => ch2Data16bitSLV, y => triggerVolt16bitSigned, g => trig2_curr_value_greater_than_thresh, l => open , e => open);
+
+    lReg2 : genericCompare
+        generic map (N => 16)
+        port map(x => last_SLV2, y => triggerVolt16bitSignedm, g => open, l => trig2_last_less_than_thresh, e => open);
+
+
+    sw(CH2_TRIG_SW_BIT_INDEX) => trig2_curr_value_greater_than_thresh and trig2_last_less_than_thresh;
 
     -- HDMI SCOPE TO HDMI CODE COPIED --
     hdmiOen <= '1';
