@@ -5,7 +5,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use work.hdmi_package.all;
+use work.scopeToHdmi_package.all;
 
 
 package acquireToHDMI_package is
@@ -60,7 +60,6 @@ CONSTANT CH2_TRIG_SW_BIT_INDEX : NATURAL := 0;
 
 CONSTANT LONG_DELAY_50Mhz_CONST_WIDTH : NATURAL := 24;
 CONSTANT LONG_DELAY_50Mhz_COUNTS : STD_LOGIC_VECTOR(LONG_DELAY_50Mhz_CONST_WIDTH - 1 downto 0) := x"00FFFF";
-
 CONSTANT SHORT_DELAY_50Mhz_CONST_WIDTH : NATURAL := 8; 
 CONSTANT SHORT_DELAY_50Mhz_COUNTS : STD_LOGIC_VECTOR(SHORT_DELAY_50Mhz_CONST_WIDTH - 1 downto 0) := x"10";
 
@@ -88,7 +87,6 @@ component acquireToHDMI_datapath is
         triggerVolt16bitSigned : in SIGNED(15 downto 0);
         triggerTimePixel : in STD_LOGIC_VECTOR(15 downto 0);
         ch1Data16bitSLV, ch2Data16bitSLV : out STD_LOGIC_VECTOR(15 downto 0);
-        
         tmdsDataP : out STD_LOGIC_VECTOR(2 donwto 0);
         tmdsDataN : out STD_LOGIC_VECTOR(2 downto 0);
         tmdsClkN : out STD_LOGIC;
@@ -104,12 +102,10 @@ component acquireToHDMI is
 		   triggerCh1, triggerCh2: out STD_LOGIC;		   
 		   conversionPlusReadoutTime: out STD_LOGIC;
 		   sampleTimerRollover: out STD_LOGIC;
-		   
 		   an7606data: in STD_LOGIC_VECTOR(15 downto 0);
 		   an7606convst, an7606cs, an7606rd, an7606reset: out STD_LOGIC;
 		   an7606od: out STD_LOGIC_VECTOR(2 downto 0);
 		   an7606busy : in STD_LOGIC;
-		   
 		   tmdsDataP : out  STD_LOGIC_VECTOR (2 downto 0);
            tmdsDataN : out  STD_LOGIC_VECTOR (2 downto 0);
            tmdsClkP : out STD_LOGIC;
