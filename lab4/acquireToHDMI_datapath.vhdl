@@ -46,9 +46,9 @@ end acquireToHDMI_datapath;
 
 architecture behavior of acquireToHDMI_datapath is
 
-    constant V_CENTER : integer := 400;
-    constant V_SLOPE  : integer := -600;
-    constant BRAM_ADDR_BITS : integer := 10;
+    constant V_CENTER : integer := 360;
+    constant V_SLOPE  : integer := -720;
+    constant BRAM_ADDR_BITS : integer := 11;
 
     signal storeIntoBramFlag: STD_LOGIC;
     -- HDMI SIGNALS ----
