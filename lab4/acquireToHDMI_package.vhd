@@ -87,7 +87,7 @@ component acquireToHDMI_datapath is
         triggerVolt16bitSigned : in SIGNED(15 downto 0);
         triggerTimePixel : in STD_LOGIC_VECTOR(15 downto 0);
         ch1Data16bitSLV, ch2Data16bitSLV : out STD_LOGIC_VECTOR(15 downto 0);
-        tmdsDataP : out STD_LOGIC_VECTOR(2 donwto 0);
+        tmdsDataP : out STD_LOGIC_VECTOR(2 downto 0);
         tmdsDataN : out STD_LOGIC_VECTOR(2 downto 0);
         tmdsClkN : out STD_LOGIC;
         tmdsClkP : out STD_LOGIC_VECTOR;
