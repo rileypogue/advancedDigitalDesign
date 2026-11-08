@@ -57,7 +57,7 @@ package scopeToHdmi_package is
     constant HEIGHT :   STD_LOGIC_VECTOR(VIDEO_WIDTH_IN_BITS-1 downto 0) := std_logic_vector(to_unsigned(720, VIDEO_WIDTH_IN_BITS));
 	
     -- This is actually half of the width
-    constant BORDER_LINE_WIDTH : std_logic_vector(2 downto 0) := "100"; -- border width: 10 pixels, set to 5 in binary here
+    constant BORDER_LINE_WIDTH : std_logic_vector(2 downto 0) := "101"; -- border width: 10 pixels, set to 5 in binary here
 
 	-- RGB color values
 	-- Border Color is WHITE: FFFFFF
