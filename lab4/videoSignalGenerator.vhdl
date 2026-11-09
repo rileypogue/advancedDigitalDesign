@@ -144,8 +144,8 @@ begin
         if rising_edge (clk) then
             if resetn = '0' then
                 pixelVert <= (others => '0');
-            elsif(v_cnt >= V_FP + V_SYNC + V_BP - 1) then
-                pixelVert <= v_cnt - (V_FP + V_SYNC + V_BP - 1);
+            elsif(v_cnt >= V_FP + V_SYNC + V_BP) then
+                pixelVert <= v_cnt - (V_FP + V_SYNC + V_BP);
             end if;
         end if;
     end process;

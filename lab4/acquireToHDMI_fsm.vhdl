@@ -78,12 +78,17 @@ begin
 						if SHORT_SW = '1' then
 							state <= WAIT_FORCED;
 						end if;
-					when WAIT_FORCED => 
-						if FORCED_MODE_SW = '1' then
-							state <= SET_STORE_FLAG;
-						end if;
-
-					when SET_STORE_FLAG =>
+                    
+                    when WAIT_FORCED =>
+                        if FORCED_MODE_SW = '1' then
+                            if SINGLE_MODE_SW = '1' then
+                                state <= SET_STORE_FLAG;
+                            end if;
+                        else
+                            state <= BEGIN_CONVERSION;
+                        end if;
+                    
+				    when SET_STORE_FLAG =>
 						state <= BEGIN_CONVERSION;
 
 					when CLEAR_STORE_FLAG =>
@@ -146,14 +151,21 @@ begin
 							state <= WAIT_SAMPLE;
 						end if;
 
-					when WAIT_SAMPLE =>
-						if (FULL_SW = '1') then
-							state <= BRAM_FULL;
-						elsif(SAMPLE_SW = '1' and (TRIGGER_SW = '0' or STORE_SW = '1' or FORCED_MODE_SW = '1') ) then
-							state <= BEGIN_CONVERSION;
-						elsif (SAMPLE_SW = '1' and STORE_SW = '0' and TRIGGER_SW = '1' and FULL_SW = '0' and FORCED_MODE_SW = '0') then
-							state <= SET_STORE_FLAG;
-						end if;
+
+                    when WAIT_SAMPLE =>
+                        if FULL_SW = '1' then
+                            state <= BRAM_FULL;
+                        elsif SAMPLE_SW = '1' then
+                            if STORE_SW = '1' then
+                                state <= BEGIN_CONVERSION;
+                            elsif FORCED_MODE_SW = '1' then
+                                state <= WAIT_FORCED;
+                            elsif CH1_TRIGGER_SW = '1' then
+                                state <= SET_STORE_FLAG;
+                            else
+                                state <= BEGIN_CONVERSION;
+                            end if;
+                        end if;
 
 					when BRAM_FULL =>
 						if ((FORCED_MODE_SW = '1') or SINGLE_MODE_SW = '1') then
