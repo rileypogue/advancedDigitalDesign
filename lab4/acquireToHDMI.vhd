@@ -1,9 +1,8 @@
---//////////Top Level for signal Acquisition /////////////////////////////--
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.acquireToHDMI_package.all;
-use work.hdmi_package.all;
+use work.scopeToHdmi_package.all;
 use work.basicBuildingBlocks_package.all;
 
 
@@ -32,6 +31,7 @@ architecture behavior of acquireToHDMI is
 
     signal cw: STD_LOGIC_VECTOR(CW_WIDTH -1 downto 0);
     signal sw: STD_LOGIC_VECTOR(SW_WIDTH -1 downto 0);
+    signal dpSw : STD_LOGIC_VECTOR(DATAPATH_SW_WIDTH - 1 downto 0); --if shit fucked get rid of
     signal forcedMode: STD_LOGIC;
     signal prevButton, currButton, buttonActivity : STD_LOGIC_VECTOR(2 downto 0);
 
@@ -43,7 +43,7 @@ begin
     an7606convst <= cw(CONVST_CW_BIT_INDEX);
     an7606cs <= cw(CS_CW_BIT_INDEX);
     an7606rd <= cw(RD_CW_BIT_INDEX);
-    an7606reset <= cw(AN7606_RESET_CW_BIT_INDEX);
+    an7606reset <= cw(RESET_AD7606_CW_BIT_INDEX);
     an7606od <= "000";
 
     ------------------------------------------------------------------------------
@@ -68,18 +68,20 @@ begin
 
     buttonActivity <= currButton and (not prevButton);
 
+    sw(8 downto 3) <= dpSw(8 downto 3); -- added
+    sw(1 downto 0) <= dpSw(1 downto 0); -- added
     sw(FORCED_MODE_SW_BIT_INDEX) <= forcedMode;
     sw(AN7606_BUSY_SW_BIT_INDEX) <= an7606busy;
-    sw(SINGLE_FORCED_TRIGGER_SW_BIT_INDEX) <= buttonActivity(0);
-    triggerCh1 <= sw(CH1_TRIGGER_SW_BIT_INDEX);
-    triggerCh2 <= sw(CH2_TRIGGER_SW_BIT_INDEX);
+    sw(SINGLE_MODE_SW_BIT_INDEX) <= buttonActivity(0);
+    triggerCh1 <= sw(CH1_TRIG_SW_BIT_INDEX);
+    triggerCh2 <= sw(CH2_TRIG_SW_BIT_INDEX);
 
  	datapath_inst: acquireToHDMI_datapath
         PORT MAP (
             clk => clk,
             resetn => resetn,
             cw => cw,
-            sw => sw(DATAPATH_SW_WIDTH - 1 downto 0),
+            sw => dpSw(DATAPATH_SW_WIDTH - 1 downto 0), -- change back to sw(datapath...) if shit breaks
             an7606data => an7606data,
             triggerVolt16bitSigned => (others => '0'),
             triggerTimePixel => (others => '0'),

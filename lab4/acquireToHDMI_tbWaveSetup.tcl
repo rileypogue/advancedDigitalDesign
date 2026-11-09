@@ -5,7 +5,6 @@
 # source acquireToHDMI_tbWaveSetup.tcl
 #################################################################################
 restart
-remove_waves [get_waves *]
 
 set UUT   /acquireToHDMI_tb/uut
 set DP    $UUT/datapath_inst
@@ -51,10 +50,12 @@ add_wave -into $BRAM_ID -color $groupColor -radix unsigned -name "Ch1 Write Addr
 add_wave -into $BRAM_ID -color $groupColor -radix unsigned -name "Read Address" $DP/rdAddr
 add_wave -into $BRAM_ID -color $groupColor -name "Ch1 Write Enable" $DP/BRAM_A/wea
 add_wave -into $BRAM_ID -color $groupColor -name "Ch2 Write Enable" $DP/BRAM_B/wea
-set MEM $DP/BRAM_A/inst/native_mem_module.blk_mem_gen_v8_4_5_inst
+set MEM $DP/BRAM_A/inst/native_mem_module.blk_mem_gen_v8_4_13_inst
 for {set i 0} {$i < 4} {incr i} {
-    add_wave -into $BRAM_ID -color $groupColor -radix hex "$MEM/memory\[$i\]"
+    add_wave -into $BRAM_ID -color $groupColor -radix hex -name "Ch1 mem\[$i\]" "$MEM/memory\[$i\]"
 }
+
+
 
 set groupColor BLUE
 set HDMI_ID [add_wave_group "Video Interface"]
@@ -106,11 +107,11 @@ foreach item {
     lassign $item bit label
     add_wave -into $CW_ID -color $groupColor -name $label "$UUT/cw\[$bit\]"
 }
-add_wave -into $CW_ID -color $groupColor -radix binary -name "DATA STORAGE COUNTER" "$UUT/cw\[9:8\]"
-add_wave -into $CW_ID -color $groupColor -radix binary -name "SAMPLING COUNTER"     "$UUT/cw\[7:6\]"
-add_wave -into $CW_ID -color $groupColor -radix binary -name "SAMPLING RATE SELECT" "$UUT/cw\[5:4\]"
-add_wave -into $CW_ID -color $groupColor -radix binary -name "LONG DELAY COUNTER"  "$UUT/cw\[3:2\]"
-add_wave -into $CW_ID -color $groupColor -radix binary -name "SHORT DELAY COUNTER" "$UUT/cw\[1:0\]"
+add_wave -into $CW_ID -color $groupColor -radix bin -name "DATA STORAGE COUNTER" "$UUT/cw\[9:8\]"
+add_wave -into $CW_ID -color $groupColor -radix bin -name "SAMPLING COUNTER"     "$UUT/cw\[7:6\]"
+add_wave -into $CW_ID -color $groupColor -radix bin -name "SAMPLING RATE SELECT" "$UUT/cw\[5:4\]"
+add_wave -into $CW_ID -color $groupColor -radix bin -name "LONG DELAY COUNTER"  "$UUT/cw\[3:2\]"
+add_wave -into $CW_ID -color $groupColor -radix bin -name "SHORT DELAY COUNTER" "$UUT/cw\[1:0\]"
 
 set FORCED_CHECK01        500ns
 set FORCED_CHECK02      700000ns

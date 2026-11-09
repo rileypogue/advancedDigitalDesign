@@ -5,7 +5,9 @@ USE ieee.std_logic_1164.ALL;
 use ieee.std_logic_unsigned.all;	
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
-use work.acquireToHDMI_package.all;					-- include your library here with added components ac97, ac97cmd
+use work.acquireToHDMI_package.all;
+use work.basicBuildingBlocks_package.all;
+use work.scopeToHdmi_package.all;
 
 ENTITY an7606 IS
     PORT ( clk : in  STD_LOGIC;
@@ -37,6 +39,7 @@ BEGIN
 		wait for 4us;
 		an7606busy <= '0';
    end process;   
+
 
    -- This process simulates a 0V-centered sinwave coming into channel 1
    -- and a 0V-centered square wave coming into channel 2   

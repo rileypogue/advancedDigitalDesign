@@ -46,8 +46,8 @@ end acquireToHDMI_datapath;
 
 architecture behavior of acquireToHDMI_datapath is
 
-    constant V_CENTER : integer := 360;
-    constant V_SLOPE  : integer := -720;
+    constant V_CENTER : integer := 400;
+    constant V_SLOPE  : integer := -600;
     constant BRAM_ADDR_BITS : integer := 11;
 
     signal storeIntoBramFlag: STD_LOGIC;
@@ -102,6 +102,7 @@ begin
     sw(SHORT_COUNTER_SW_BIT_INDEX) <= short_timer_done;
     sw(LONG_COUNTER_SW_BIT_INDEX) <= long_timer_done;
     sw(SAMPLE_SW_BIT_INDEX) <= sampling_done;
+    -- status word for busy status of the an7607 is assigned here
 
     shortCounter : genericCounter
         generic map (N=> SHORT_DELAY_50Mhz_CONST_WIDTH)
@@ -159,6 +160,7 @@ begin
 
     trig1_event <= trig1_curr_value_greater_than_thresh and trig1_last_less_than_thresh;
     sw(CH1_TRIG_SW_BIT_INDEX) <= trig1_event;
+    sw(TRIGGER_SW_BIT_INDEX) <= trig1_event or trig2_event;
 
     gReg2 : genericRegister
         generic map(N => 16)
